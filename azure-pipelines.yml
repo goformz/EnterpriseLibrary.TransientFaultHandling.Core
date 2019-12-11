@@ -11,20 +11,14 @@ trigger:
   branches:
     include:
     - master
-  paths:
-    include:
-    - TransientFaultHandling.Data.Core
 
 pr:
   branches:
     include:
     - master
-  paths:
-    include:
-    - TransientFaultHandling.Data.Core
 
 steps:
 - template: build-nuget-netcore.yml@templates
   parameters:
-    runTests: true
-    workingDirectory: 'TransientFaultHandling.Data.Core'
+    runTests: false
+    workingDirectory: 'Source/TransientFaultHandling.Data.Core'
