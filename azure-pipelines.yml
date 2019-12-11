@@ -1,0 +1,30 @@
+name: 2.1$(Rev:.r)-modified
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: goformz/devops-templates
+      endpoint: github
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - TransientFaultHandling.Data.Core
+
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - TransientFaultHandling.Data.Core
+
+steps:
+- template: build-nuget-netcore.yml@templates
+  parameters:
+    runTests: true
+    workingDirectory: 'TransientFaultHandling.Data.Core'
