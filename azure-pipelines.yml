@@ -16,7 +16,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: 'Source/TransientFaultHandling.Core/*.csproj'
+    packagesToPack: 'Source/TransientFaultHandling.Data.Core/TransientFaultHandling.Data.Core.nuspec'
     versioningScheme: 'byBuildNumber'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
