@@ -21,4 +21,4 @@ steps:
 - template: build-nuget-netcore.yml@templates
   parameters:
     runTests: false
-    workingDirectory: 'Source/TransientFaultHandling.Data.Core'
+    workingDirectory: ''
