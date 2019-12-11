@@ -11,7 +11,7 @@ steps:
   inputs:
     command: 'build'
     projects: '*.sln'
-    arguments: '--configuration Release /p:AssemblyVersion=$(Build.BuildNumber)'
+    arguments: '--configuration Release'
 
 - task: NuGetCommand@2
   inputs:
