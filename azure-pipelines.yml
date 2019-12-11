@@ -1,24 +1,30 @@
 name: 2.1$(Rev:.r)-modified
 
-resources:
-  repositories:
-    - repository: templates
-      type: github
-      name: goformz/devops-templates
-      endpoint: github
-
 trigger:
   branches:
     include:
     - master
 
-pr:
-  branches:
-    include:
-    - master
-
 steps:
-- template: build-nuget-netcore.yml@templates
-  parameters:
-    runTests: false
-    workingDirectory: '.'
+- task: DotNetCoreCLI@2
+  displayName: "Build"
+  inputs:
+    command: 'build'
+    projects: '*.sln'
+    arguments: '--configuration Release /p:AssemblyVersion=$(Build.BuildNumber)'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.nuspec'
+    versioningScheme: 'byBuildNumber'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '2dce6737-5b9e-4655-b71f-099c860912fa'
+  displayName: 'Publish NuGet to DevOps feed'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
